@@ -4,18 +4,38 @@
     <title>OAuth Redirect</title>
 </head>
 <body>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var currentUrl = window.location.href;
-            var token = extractAccessToken(currentUrl);
-            console.log('Access Token:', token);
-            // Additional logic to handle the token
-        });
-
-        function extractAccessToken(url) {
-            var match = url.match(/#access_token=([^&]+)/);
-            return match ? match[1] : null;
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentUrl = window.location.href;
+        var token = extractAccessToken(currentUrl);
+        if (token) {
+            sendTokenToWebApp(token);
         }
-    </script>
+    });
+
+    function extractAccessToken(url) {
+        var match = url.match(/#access_token=([^&]+)/);
+        return match ? match[1] : null;
+    }
+
+    function sendTokenToWebApp(token) {
+        var webAppUrl = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'; // Replace with your Web App URL
+        var payload = {
+            'token': token
+        };
+
+        fetch(webAppUrl, {
+            method: 'POST', // or 'GET' depending on your Web App setup
+            mode: 'no-cors', // if needed for cross-origin requests
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => console.log('Token sent successfully'))
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
 </body>
 </html>
