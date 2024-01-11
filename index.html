@@ -7,9 +7,15 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var currentUrl = window.location.href;
-            // Logic to handle the URL, extract the token, and possibly send it to your server
-            console.log(currentUrl);
+            var token = extractAccessToken(currentUrl);
+            console.log('Access Token:', token);
+            // Additional logic to handle the token
         });
+
+        function extractAccessToken(url) {
+            var match = url.match(/#access_token=([^&]+)/);
+            return match ? match[1] : null;
+        }
     </script>
 </body>
 </html>
