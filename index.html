@@ -18,23 +18,20 @@
         return match ? match[1] : null;
     }
 
-    function sendTokenToWebApp(token) {
-        var webAppUrl = 'https://script.google.com/macros/s/AKfycbyXHvLQW0VEVEaoUVeBuuYQkr7aWEuORu55yxnnCItg3OIEHNX8hXAlXp3LCyGNBOLIIg/exec'; // Replace with your Web App URL
-        var payload = {
-            'token': token
-        };
+function sendTokenToWebApp(token) {
+    var webAppUrl = 'https://script.google.com/macros/s/AKfycbyXHvLQW0VEVEaoUVeBuuYQkr7aWEuORu55yxnnCItg3OIEHNX8hXAlXp3LCyGNBOLIIg/exec';
+    var formData = new FormData();
+    formData.append('token', token);
 
-        fetch(webAppUrl, {
-            method: 'POST', // or 'GET' depending on your Web App setup
-            mode: 'no-cors', // if needed for cross-origin requests
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => console.log('Token sent successfully'))
-        .catch(error => console.error('Error:', error));
-    }
+    fetch(webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+    })
+    .then(response => console.log('Token sent successfully'))
+    .catch(error => console.error('Error:', error));
+}
+
 </script>
 
 </body>
