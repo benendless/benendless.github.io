@@ -4,37 +4,52 @@
     <title>OAuth Redirect</title>
 </head>
 <body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var currentUrl = window.location.href;
-        var token = extractAccessToken(currentUrl);
-        if (token) {
-            sendTokenToWebApp(token);
+    <div id="message"></div> <!-- Container for messages -->
+
+    <script>
+        function showMessage(success, message) {
+            var messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = '<div>' + message[0] + '</div><div>' + message[1] + '</div>';
+            if (!success) {
+                messageDiv.innerHTML += '<div>' + message[2] + '</div>';
+            }
         }
-    });
 
-    function extractAccessToken(url) {
-        var match = url.match(/#access_token=([^&]+)/);
-        return match ? match[1] : null;
-    }
+        document.addEventListener("DOMContentLoaded", function() {
+            var currentUrl = window.location.href;
+            var token = extractAccessToken(currentUrl);
+            if (token) {
+                sendTokenToWebApp(token);
+            }
+        });
 
-function sendTokenToWebApp(token) {
-    var webAppUrl = 'https://script.google.com/macros/s/AKfycbw7zQhq2Vpi5-rTdoimNwV5-Y7ddoQhV43hW68g41qNhwPUwpyJXtojfFVyn812EBZG/exec';
-    fetch(webAppUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'token=' + encodeURIComponent(token)
-    })
-    .then(response => console.log('Token sent successfully'))
-    .catch(error => console.error('Error:', error));
-}
+        function extractAccessToken(url) {
+            var match = url.match(/#access_token=([^&]+)/);
+            return match ? match[1] : null;
+        }
 
-
-
-</script>
-
+        function sendTokenToWebApp(token) {
+            var webAppUrl = 'https://script.google.com/macros/s/AKfycbw7zQhq2Vpi5-rTdoimNwV5-Y7ddoQhV43hW68g41qNhwPUwpyJXtojfFVyn812EBZG/exec';
+            fetch(webAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'token=' + encodeURIComponent(token)
+            })
+            .then(response => {
+                console.log('Token sent successfully');
+                showMessage(true, ["Noice!", "You've logged onto the DocuSign matrix."]);
+                        setTimeout(function() {
+            window.close(); // This will attempt to close the window after 4 seconds
+        }, 4000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage(false, ["Dun Dun DUUUUUUUNNNNNN", "Something went wrong, I guess you took the wrong pill or something...", "But seriously... there was an error logging into DocuSign. Please contact Ben, and do not try to do anything on the app."]);
+            });
+        }
+    </script>
 </body>
 </html>
