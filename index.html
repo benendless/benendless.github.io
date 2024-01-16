@@ -43,7 +43,7 @@
                 showMessage(true, ["Noice!", "You've logged onto the DocuSign matrix."]);
 
                     // Trigger the callback in the GAS web app
-    triggerCallbackInWebApp();
+    triggerCallbackInWebApp(webAppUrl);
                 
                         setTimeout(function() {
             window.close(); // This will attempt to close the window after 4 seconds
@@ -55,7 +55,7 @@
             });
         }
 
-        function triggerCallbackInWebApp() {
+        function triggerCallbackInWebApp(webAppUrl) {
     fetch(webAppUrl, {
         method: 'POST',
         mode: 'no-cors',
